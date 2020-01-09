@@ -6,10 +6,11 @@ netArray = []
 players = []
 scores = []
 times = []
-count = 10
-mutationRate = 0.1  # 10%
+count = 100
+mutationRate = 0.2  # 10%
 currTime = time.time()
 crea = False
+gen = 0
 
 
 def fitness():
@@ -19,8 +20,11 @@ def fitness():
 
 
 def restart(crossoverResult):
+    global gen
+    gen = gen + 1
     from game import Player
     from game import resetTime
+    from game import resetPipes
     players.clear()
     global count
     count = len(crossoverResult)
@@ -30,11 +34,15 @@ def restart(crossoverResult):
         p = Player(network)
         players.append(p)
     # resetTime()
+    resetPipes()
 
 
 def selection():
+    global count
     selectionResult = []
-    for i in range(6):
+    offspring_count = max((int)(0.8*count), 6)
+    count = offspring_count
+    for i in range(count):
         if i % 2 == 0:
             continue
         selectionResult.append([players[i], players[i+1]])
@@ -128,6 +136,9 @@ def takeAction(screen):
             p.collides(players[i])
             out = netArray[i].forward_prop(
                 p.distanceToPipe(10, players[i].getY()))
+
+            if(gen == 5):
+                print("out")
 
             if out[0] < out[1]:  # stay put
                 pass

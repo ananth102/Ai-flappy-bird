@@ -67,8 +67,7 @@ class Player(pygame.sprite.Sprite):
         pygame.draw.rect(screen, (self.r, self.g, 0), self.image)
 
     def moveY(self, dY):
-        if(random.randint(0, 10) < 5):
-            return
+
         if(self.done):
             return
         self.image.move_ip(0, dY)
@@ -143,6 +142,12 @@ def resetTime():
 
 def getOnScreenPipes():
     return onScreenPipes
+
+
+def resetPipes():
+    onScreenPipes.clear()
+    newPipe = Pipe(300, 300)
+    onScreenPipes.append(newPipe)
 
 
 running = True
